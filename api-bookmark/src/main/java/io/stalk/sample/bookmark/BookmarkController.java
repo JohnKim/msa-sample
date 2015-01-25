@@ -1,5 +1,8 @@
 package io.stalk.sample.bookmark;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import io.stalk.sample.bookmark.model.AccountRepository;
 import io.stalk.sample.bookmark.model.Bookmark;
 import io.stalk.sample.bookmark.model.BookmarkRepository;
@@ -7,6 +10,8 @@ import io.stalk.sample.bookmark.model.BookmarkRepository;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,5 +70,24 @@ class UserNotFoundException extends RuntimeException {
 
 	public UserNotFoundException(String userId) {
 		super("could not find user '" + userId + "'.");
+	}
+}
+
+class BookmarkResource extends ResourceSupport {
+
+	private final Bookmark bookmark;
+
+	public BookmarkResource(Bookmark bookmark) {
+		String username = bookmark.getAccount().getUsername();
+		this.bookmark = bookmark;
+		this.add(new Link(bookmark.uri, "bookmark-uri"));
+		this.add(linkTo(BookmarkController.class, username).withRel("bookmarks"));
+		this.add(linkTo(
+				methodOn(BookmarkController.class, username).readBookmark(null,
+						bookmark.getId())).withSelfRel());
+	}
+
+	public Bookmark getBookmark() {
+		return bookmark;
 	}
 }
