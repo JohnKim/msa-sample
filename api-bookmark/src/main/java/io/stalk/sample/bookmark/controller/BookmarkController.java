@@ -1,4 +1,4 @@
-package io.stalk.sample.bookmark;
+package io.stalk.sample.bookmark.controller;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;

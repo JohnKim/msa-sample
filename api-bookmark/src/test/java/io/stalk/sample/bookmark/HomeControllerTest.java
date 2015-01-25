@@ -1,5 +1,7 @@
 package io.stalk.sample.bookmark;
 
+import io.stalk.sample.bookmark.controller.HomeController;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
